@@ -1,4 +1,5 @@
-﻿using _8PuzzleGame.Models;
+﻿using _8PuzzleGame.Controllers;
+using _8PuzzleGame.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -25,11 +26,17 @@ namespace _8PuzzleGame
             int[,] goalState = GenerateGoalState();
 
             NodeTree tree = new NodeTree(initState, goalState);
+            SearchController searchController = new SearchController();
 
-            bool result = tree.IsTheGoal();
-            if(result)
+            List<NodeTree> solution = searchController.FirstSearch(tree);
+
+            if (solution.Count > 0)
             {
-
+                solution.Reverse();
+                for (int i = 0; i < solution.Count; i++)
+                {
+                    PrintNode(solution[i].puzzle);
+                }
             }
         }
 
@@ -67,6 +74,17 @@ namespace _8PuzzleGame
             goalState[2, 2] = (int)numUDF22.Value;
 
             return goalState;
+        }
+
+        private void PrintNode(int[,] node)
+        {
+            richTextBoxResult.AppendText(Environment.NewLine);
+            richTextBoxResult.AppendText(node[0,0].ToString() + " " + node[0, 1].ToString() + " " +
+                node[0, 2].ToString() + "\n");
+            richTextBoxResult.AppendText(node[1, 0].ToString() + " " + node[1, 1].ToString() + " " +
+                node[1, 2].ToString() + "\n");
+            richTextBoxResult.AppendText(node[2, 0].ToString() + " " + node[2, 1].ToString() + " " +
+                node[2, 2].ToString() + "\n");
         }
     }
 }

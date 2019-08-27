@@ -8,22 +8,25 @@ namespace _8PuzzleGame.Models
 {
     class NodeTree
     {
-        List<NodeTree> children = new List<NodeTree>();
-        NodeTree parent;
-        int[,] puzzle = new int[3, 3];
+        public List<NodeTree> children = new List<NodeTree>();
+        public NodeTree parent = null;
+        public int[,] puzzle = new int[3, 3];
         int[,] goalPuzzle = new int[3,3];
         int LineIndex = 0;
         int ColIndex = 0;
 
         public NodeTree(int[,] initSatate, int[,] goalState)
         {
-            Array.Copy(puzzle, initSatate, initSatate.Length);
-            Array.Copy(goalPuzzle, goalState, goalState.Length);
+            //Array.Copy(puzzle, initSatate, initSatate.Length);
+            //Array.Copy(goalPuzzle, goalState, goalState.Length);
+            puzzle = (int[,])initSatate.Clone();
+            goalPuzzle = (int[,])goalState.Clone();
         }
 
         public NodeTree(int[,] p)
         {
-            Array.Copy(puzzle, p, p.Length);
+            //Array.Copy(puzzle, p, p.Length);
+            puzzle = (int[,])p.Clone();
         }
 
         public void SideMove()
@@ -51,7 +54,8 @@ namespace _8PuzzleGame.Models
             if(ColIndex < 2)
             {
                 int[,] subPuzzle = new int[3, 3];
-                Array.Copy(subPuzzle, currentPuzze, currentPuzze.Length);
+                //Array.Copy(subPuzzle, currentPuzze, currentPuzze.Length);
+                subPuzzle = (int[,])currentPuzze.Clone();
 
                 int temp = subPuzzle[LineIndex + 1, ColIndex];
                 subPuzzle[LineIndex + 1, ColIndex] = subPuzzle[LineIndex, ColIndex];
@@ -68,7 +72,8 @@ namespace _8PuzzleGame.Models
             if (ColIndex > 0)
             {
                 int[,] subPuzzle = new int[3, 3];
-                Array.Copy(subPuzzle, currentPuzze, currentPuzze.Length);
+                //Array.Copy(subPuzzle, currentPuzze, currentPuzze.Length);
+                subPuzzle = (int[,])currentPuzze.Clone();
 
                 int temp = subPuzzle[LineIndex - 1, ColIndex];
                 subPuzzle[LineIndex - 1, ColIndex] = subPuzzle[LineIndex, ColIndex];
@@ -85,7 +90,8 @@ namespace _8PuzzleGame.Models
             if (LineIndex > 0)
             {
                 int[,] subPuzzle = new int[3, 3];
-                Array.Copy(subPuzzle, currentPuzze, currentPuzze.Length);
+                //Array.Copy(subPuzzle, currentPuzze, currentPuzze.Length);
+                subPuzzle = (int[,])currentPuzze.Clone();
 
                 int temp = subPuzzle[LineIndex, ColIndex - 1];
                 subPuzzle[LineIndex, ColIndex - 1] = subPuzzle[LineIndex, ColIndex];
@@ -102,7 +108,8 @@ namespace _8PuzzleGame.Models
             if (LineIndex < 2)
             {
                 int[,] subPuzzle = new int[3, 3];
-                Array.Copy(subPuzzle, currentPuzze, currentPuzze.Length);
+                //Array.Copy(subPuzzle, currentPuzze, currentPuzze.Length);
+                subPuzzle = (int[,])currentPuzze.Clone();
 
                 int temp = subPuzzle[LineIndex, ColIndex + 1];
                 subPuzzle[LineIndex, ColIndex + 1] = subPuzzle[LineIndex, ColIndex];
@@ -112,6 +119,18 @@ namespace _8PuzzleGame.Models
                 children.Add(child);
                 child.parent = this;
             }
+        }
+
+        public bool IsSamePuzzle(int[,] p)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    if (puzzle[i, j] != p[i, j]) return false;
+                }
+            }
+            return true;
         }
 
         public bool IsTheGoal()
