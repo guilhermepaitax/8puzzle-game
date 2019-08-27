@@ -9,7 +9,7 @@ namespace _8PuzzleGame.Controllers
 {
     class SearchController
     {
-        public List<NodeTree> FirstSearch(NodeTree root)
+        public List<NodeTree> FirstSearch(NodeTree root, int[,] goal)
         {
             List<NodeTree> pathSolution = new List<NodeTree>();
             List<NodeTree> openList = new List<NodeTree>();
@@ -27,15 +27,16 @@ namespace _8PuzzleGame.Controllers
 
                 for (int i = 0; i < currentNode.children.Count; i++)
                 {
-                    if (currentNode.IsTheGoal())
+                    NodeTree currentChild = currentNode.children[i];
+                    if (currentChild.IsTheGoal(goal))
                     {
                         goalFound = true;
-                        TracePath(pathSolution, currentNode);
+                        TracePath(pathSolution, currentChild);
                     }
 
-                    if(!Contains(openList, currentNode) && !Contains(closeList, currentNode))
+                    if(!Contains(openList, currentChild) && !Contains(closeList, currentChild))
                     {
-                        openList.Add(currentNode);
+                        openList.Add(currentChild);
                     }
                 }
             }

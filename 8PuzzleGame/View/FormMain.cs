@@ -25,10 +25,10 @@ namespace _8PuzzleGame
             int[,] initState = GenerateInitState();
             int[,] goalState = GenerateGoalState();
 
-            NodeTree tree = new NodeTree(initState, goalState);
+            NodeTree tree = new NodeTree(initState);
             SearchController searchController = new SearchController();
 
-            List<NodeTree> solution = searchController.FirstSearch(tree);
+            List<NodeTree> solution = searchController.FirstSearch(tree, goalState);
 
             if (solution.Count > 0)
             {
